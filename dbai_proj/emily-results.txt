@@ -1,0 +1,112 @@
+------------------------------Zero Shots------------------------------
+How many tomato plants are there?
+SELECT COUNT(*) FROM Plant WHERE Species = 'Tomato';
+[(0,)]
+There are currently no tomato plants.
+------------------------------------------------------------
+How many plants are in the butterfy garden?
+SELECT COUNT(*) FROM Location WHERE GardenSection = 'butterfly garden';
+[(0,)]
+There are no plants in the butterfly garden.
+------------------------------------------------------------
+Which plants does John Smith care for?
+SELECT
+    Plant.Name
+FROM
+    Plant
+    INNER JOIN PlantGardener ON Plant.PlantID = PlantGardener.PlantID
+    INNER JOIN Gardener ON PlantGardener.GardenerID = Gardener.GardenerID
+WHERE
+    Gardener.FirstName = 'John' AND Gardener.LastName = 'Smith';
+[('Rose',), ('Tomato',), ('Butterfly Bush',)]
+John Smith cares for roses, tomatoes, and butterfly bushes.
+------------------------------------------------------------
+Which plants need to be watered every other day?
+SELECT Name 
+FROM Plant 
+WHERE WaterFrequency = 'Every Other Day';
+[]
+Here are some plants that require watering every other day:
+- Some types of potted ferns
+- Certain varieties of orchids
+- Certain types of succulents, such as Sempervivum
+- Certain vegetable plants, like lettuce and celery
+
+Remember to adjust watering frequency based on specific plant needs and environmental conditions.
+------------------------------------------------------------
+Which plants have been watered in the last 3 days?
+SELECT p.PlantID, p.Name 
+FROM Plant p 
+JOIN PlantGardener pg ON p.PlantID = pg.PlantID 
+WHERE DATE(pg.LastWateredDate) >= DATE('now', '-3 day');
+[]
+No plants have been watered in the last 3 days.
+------------------------------------------------------------
+Where are the carrots?
+SELECT Location.GardenSection
+FROM Location
+JOIN Plant ON Location.PlantID = Plant.PlantID
+WHERE Plant.Species = 'carrots';
+[]
+Carrots are not available at the moment.
+------------------------------------------------------------
+What species of plants were planted in 2022?
+SELECT Species 
+FROM Plant 
+WHERE strftime('%Y', PlantedDate) = '2022';
+[('Tulipa',), ('Buddleja davidii',), ('Asclepias',)]
+In 2022, the planted species of plants include Tulipa, Buddleja davidii, and Asclepias.
+------------------------------Double Shots------------------------------
+How many tomato plants are there?
+SELECT COUNT(*) AS TotalTomatoPlants
+FROM Plant
+WHERE Name = 'Tomato';
+[(1,)]
+There is one tomato plant.
+------------------------------------------------------------
+How many plants are in the butterfy garden?
+SELECT COUNT(*) AS TotalButterflyGardenPlants
+FROM Location
+WHERE GardenSection = 'Butterfly Garden';
+[(2,)]
+There are 2 plants in the butterfly garden.
+------------------------------------------------------------
+Which plants does John Smith care for?
+SELECT P.Name 
+FROM Plant P
+JOIN PlantGardener PG ON P.PlantID = PG.PlantID
+JOIN Gardener G ON PG.GardenerID = G.GardenerID
+WHERE G.FirstName = 'John' AND G.LastName = 'Smith';
+[('Rose',), ('Tomato',), ('Butterfly Bush',)]
+John Smith cares for roses, tomatoes, and butterfly bushes.
+------------------------------------------------------------
+Which plants need to be watered every other day?
+SELECT Name
+FROM Plant
+WHERE WaterFrequency = 'Every Other Day';
+[]
+Plants that need to be watered every other day generally include certain types of tropical or moisture-loving plants.
+------------------------------------------------------------
+Which plants have been watered in the last 3 days?
+SELECT DISTINCT p.Name
+FROM Plant p
+JOIN PlantGardener pg ON p.PlantID = pg.PlantID
+WHERE pg.LastWateredDate >= date('now', '-3 days');
+[]
+No plants have been watered in the last 3 days.
+------------------------------------------------------------
+Where are the carrots?
+SELECT GardenSection, Row, Column
+FROM Location
+JOIN Plant ON Location.PlantID = Plant.PlantID
+WHERE Plant.Name = 'Carrot';
+[('Vegetable Patch', 2, 3)]
+The carrots are in the vegetable patch.
+------------------------------------------------------------
+What species of plants were planted in 2022?
+SELECT Species
+FROM Plant
+WHERE PlantedDate >= '2022-01-01' AND PlantedDate <= '2022-12-31';
+[('Tulipa',), ('Buddleja davidii',), ('Asclepias',)]
+In 2022, the plants that were planted included Tulipa (Tulips), Buddleja davidii (Butterfly bush), and Asclepias (Milkweed).
+------------------------------------------------------------
